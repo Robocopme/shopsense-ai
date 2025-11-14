@@ -1,0 +1,89 @@
+server:
+  port: 8086
+  shutdown: graceful
+
+spring:
+  application:
+    name: notification-service
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/shopsense}
+    username: ${SPRING_DATASOURCE_USERNAME:shopsense}
+    password: ${SPRING_DATASOURCE_PASSWORD:shopsense}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    consumer:
+      group-id: notification-service-group
+      auto-offset-reset: latest
+      properties:
+        spring.json.trusted.packages: '*'
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+  cache:
+    type: redis
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  mail:
+    host: ${SMTP_HOST:localhost}
+    port: ${SMTP_PORT:1025}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  tracing:
+    enabled: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      default:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 20
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+  retry:
+    instances:
+      default:
+        max-attempts: 3
+        wait-duration: 2s
+
+shopsense:
+  jwt:
+    issuer: shopsense-ai
+    secret: ${JWT_SECRET:d25tgtjowQ2BDDd__RSWJkIHWp8fqCye3PL1vI72swLpeXNXGLUZi2_3zpYsTenSjETrhWgBhyAHxoqcaBunRQ==}
+    expiration-seconds: 3600
+  rate-limit:
+    replenish-rate: 100
+    burst-capacity: 200
+  kafka-topic: notification-events
