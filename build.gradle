@@ -1,0 +1,149 @@
+plugins {
+    id 'java'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '3.2.5' apply false
+}
+
+allprojects {
+    group = 'ai.shopsense'
+    version = '1.0.0'
+}
+
+ext {
+    set('springBootVersion', "3.2.5")
+    set('springCloudVersion', "2023.0.1")
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        mavenCentral()
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.release = 21
+    }
+
+        dependencyManagement {
+            imports {
+                mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+                mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            }
+        }
+}
+
+project(":shared-kernel") {
+    apply plugin: 'java-library'
+
+    dependencies {
+        api 'org.springframework.boot:spring-boot-starter-json'
+        api 'org.springframework.boot:spring-boot-starter-validation'
+        api 'org.springframework.boot:spring-boot-starter-security'
+        api 'io.jsonwebtoken:jjwt-api:0.11.5'
+        api 'io.jsonwebtoken:jjwt-impl:0.11.5'
+        api 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+        api 'com.fasterxml.jackson.core:jackson-databind'
+        api 'org.apache.commons:commons-lang3:3.14.0'
+        compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    }
+}
+
+def serviceModuleNames = [
+    'user-service',
+    'product-service',
+    'price-service',
+    'review-service',
+    'ai-insights-service',
+    'notification-service',
+    'analytics-service'
+]
+
+configure(serviceModuleNames.collect { project(":${it}") }) {
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.boot:spring-boot-starter-cache'
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation 'org.springframework.kafka:spring-kafka'
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+        implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+        implementation 'io.micrometer:micrometer-registry-prometheus'
+        implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+        implementation 'org.springframework.retry:spring-retry'
+        implementation project(':shared-kernel')
+
+        runtimeOnly 'org.postgresql:postgresql'
+        testImplementation 'org.springframework.security:spring-security-test'
+    }
+}
+
+project(":notification-service") {
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-mail'
+        implementation 'com.google.firebase:firebase-admin:9.2.0'
+    }
+}
+
+project(":ai-insights-service") {
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-webflux'
+        implementation 'org.springframework.boot:spring-boot-starter-integration'
+    }
+}
+
+project(":analytics-service") {
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-batch'
+    }
+}
+
+project(":api-gateway") {
+    apply plugin: 'org.springframework.boot'
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-webflux'
+        implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+        implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+        implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
+        implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.5.0'
+        implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+        implementation 'io.micrometer:micrometer-registry-prometheus'
+        implementation 'org.springframework.kafka:spring-kafka'
+        implementation project(':shared-kernel')
+
+        testImplementation 'org.springframework.security:spring-security-test'
+    }
+}

@@ -1,0 +1,22 @@
+rootProject.name = "shopsense-ai"
+
+include(
+        "shared-kernel",
+        "api-gateway",
+        "user-service",
+        "product-service",
+        "price-service",
+        "review-service",
+        "ai-insights-service",
+        "notification-service",
+        "analytics-service"
+)
+
+project(":api-gateway").projectDir = file("services/api-gateway")
+project(":user-service").projectDir = file("services/user-service")
+project(":product-service").projectDir = file("services/product-service")
+project(":price-service").projectDir = file("services/price-service")
+project(":review-service").projectDir = file("services/review-service")
+project(":ai-insights-service").projectDir = file("services/ai-insights-service")
+project(":notification-service").projectDir = file("services/notification-service")
+project(":analytics-service").projectDir = file("services/analytics-service")
