@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="sidebar.css" />
+  </head>
+  <body>
+    <section class="sidebar">
+              <header>
+                <div class="badge">β</div>
+                <h1>ShopSense AI</h1>
+                <p>Ethical shopping insights powered by on-device consent.</p>
+              </header>
+              <div id="auth" class="card">
+                <h2>Sign in</h2>
+                <p class="muted">Create an account once, then sign in to unlock AI insights.</p>
+                <label>Email</label>
+                <input id="auth-email" type="email" placeholder="you@example.com" />
+                <label>Password</label>
+                <input id="auth-password" type="password" placeholder="••••••••••" />
+                <label>Full name (for new accounts)</label>
+                <input id="auth-name" type="text" placeholder="Taylor Shopper" />
+                <div class="auth-actions">
+                  <button id="login-btn" class="secondary">Sign in</button>
+                  <button id="register-btn" class="ghost">Create account</button>
+                </div>
+                <p id="auth-status" class="status"></p>
+              </div>
+              <div id="consent" class="card">
+                <p>
+                  By clicking analyze, you confirm this capture is user-initiated and compliant with retailer terms. No automation, no bots.
+                </p>
+                <label class="toggle">
+          <input type="checkbox" id="consent-toggle" />
+          <span>Remember my consent</span>
+        </label>
+        <button id="analyze-btn">Analyze This Product</button>
+      </div>
+      <div id="insights" class="card hidden">
+        <h2>Insights</h2>
+        <div id="status" class="status">Waiting for signal…</div>
+        <div id="insight-stream"></div>
+      </div>
+    </section>
+    <script src="sidebar.js"></script>
+  </body>
+</html>

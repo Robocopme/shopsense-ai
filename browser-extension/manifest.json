@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "ShopSense AI Assistant",
+  "description": "Legal, user-initiated product insights for Amazon, Walmart, and Best Buy shoppers.",
+  "version": "1.0.0",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "notifications",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://*.amazon.com/*",
+    "https://*.walmart.com/*",
+    "https://*.bestbuy.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.amazon.com/*",
+        "https://*.walmart.com/*",
+        "https://*.bestbuy.com/*"
+      ],
+      "js": ["src/extractors.bundle.js", "src/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Open ShopSense AI"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/sidebar.html",
+        "src/sidebar.css",
+        "src/sidebar.js",
+        "src/extractors.bundle.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

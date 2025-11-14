@@ -1,0 +1,8 @@
+FROM eclipse-temurin:21-jre
+ARG SERVICE_NAME
+ARG JAR_FILE=services/${SERVICE_NAME}/build/libs/*.jar
+ENV SERVICE_NAME=${SERVICE_NAME}
+WORKDIR /opt/app
+COPY ${JAR_FILE} app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "./app.jar"]

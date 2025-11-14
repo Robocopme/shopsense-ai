@@ -1,0 +1,120 @@
+:root {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #0f172a;
+  background: transparent;
+}
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+  color: #e2e8f0;
+  min-height: 100vh;
+}
+.sidebar {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fade-in 0.4s ease;
+}
+header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+.badge {
+  width: 32px;
+  height: 32px;
+  background: #22d3ee;
+  color: #0f172a;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.card {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 20px 35px rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(16px);
+}
+button {
+  margin-top: 16px;
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+  color: #0f172a;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(14, 165, 233, 0.4);
+}
+.secondary {
+  background: #22d3ee;
+}
+.ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+  box-shadow: none;
+}
+input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 10px 12px;
+  background: rgba(15, 23, 42, 0.35);
+  color: #e2e8f0;
+  margin-top: 6px;
+}
+label {
+  font-size: 0.85rem;
+  color: #cbd5f5;
+  display: block;
+  margin-top: 12px;
+}
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+.status {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  margin-bottom: 12px;
+}
+.muted {
+  color: #94a3b8;
+  margin-top: 0;
+}
+.auth-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+.auth-actions button {
+  margin-top: 0;
+  flex: 1;
+}
+.hidden {
+  display: none;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,28 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'gateway'
+    static_configs:
+      - targets: ['api-gateway:8080']
+  - job_name: 'user-service'
+    static_configs:
+      - targets: ['user-service:8081']
+  - job_name: 'product-service'
+    static_configs:
+      - targets: ['product-service:8082']
+  - job_name: 'price-service'
+    static_configs:
+      - targets: ['price-service:8083']
+  - job_name: 'review-service'
+    static_configs:
+      - targets: ['review-service:8084']
+  - job_name: 'ai-insights-service'
+    static_configs:
+      - targets: ['ai-insights-service:8085']
+  - job_name: 'notification-service'
+    static_configs:
+      - targets: ['notification-service:8086']
+  - job_name: 'analytics-service'
+    static_configs:
+      - targets: ['analytics-service:8087']
